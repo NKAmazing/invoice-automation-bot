@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Demo — Carga de facturas</title>
+    <style>
+      :root {
+        font-family: system-ui, sans-serif;
+        line-height: 1.5;
+        color: #1a1a1a;
+        background: #f4f4f5;
+      }
+      body {
+        max-width: 32rem;
+        margin: 2rem auto;
+        padding: 0 1rem;
+      }
+      h1 {
+        font-size: 1.25rem;
+        margin-bottom: 0.5rem;
+      }
+      .hint {
+        font-size: 0.875rem;
+        color: #52525b;
+        margin-bottom: 1.25rem;
+      }
+      form {
+        background: #fff;
+        border: 1px solid #e4e4e7;
+        border-radius: 8px;
+        padding: 1.25rem;
+        box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+      }
+      label {
+        display: block;
+        font-size: 0.75rem;
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: 0.02em;
+        color: #3f3f46;
+        margin-bottom: 0.35rem;
+      }
+      input {
+        width: 100%;
+        box-sizing: border-box;
+        padding: 0.5rem 0.65rem;
+        border: 1px solid #d4d4d8;
+        border-radius: 6px;
+        font-size: 1rem;
+        margin-bottom: 1rem;
+      }
+      input:focus {
+        outline: 2px solid #2563eb;
+        outline-offset: 1px;
+        border-color: #2563eb;
+      }
+      button[type="submit"] {
+        width: 100%;
+        padding: 0.6rem;
+        font-size: 0.95rem;
+        font-weight: 600;
+        color: #fff;
+        background: #2563eb;
+        border: none;
+        border-radius: 6px;
+        cursor: pointer;
+      }
+      button[type="submit"]:hover {
+        background: #1d4ed8;
+      }
+      #log {
+        margin-top: 1.5rem;
+      }
+      #log h2 {
+        font-size: 0.875rem;
+        margin: 0 0 0.5rem;
+        color: #52525b;
+      }
+      #entries {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+        background: #fff;
+        border: 1px solid #e4e4e7;
+        border-radius: 8px;
+        max-height: 12rem;
+        overflow-y: auto;
+      }
+      #entries li {
+        padding: 0.65rem 0.85rem;
+        border-bottom: 1px solid #f4f4f5;
+        font-size: 0.9rem;
+        font-family: ui-monospace, monospace;
+      }
+      #entries li:last-child {
+        border-bottom: none;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>Formulario de prueba</h1>
+    <p class="hint">
+      Abrí este archivo en el navegador (doble clic o arrastrar a una pestaña).
+      Hacé foco en <strong>Nombre</strong>, ejecutá <code>python main.py</code> en la
+      terminal y esperá la cuenta regresiva.
+    </p>
+
+    <form id="invoice-form" action="#" method="post">
+      <label for="name">Nombre</label>
+      <input
+        id="name"
+        name="name"
+        type="text"
+        autocomplete="off"
+        tabindex="1"
+      />
+
+      <label for="amount">Monto</label>
+      <input
+        id="amount"
+        name="amount"
+        type="text"
+        inputmode="decimal"
+        autocomplete="off"
+        tabindex="2"
+      />
+
+      <label for="description">Descripción</label>
+      <input
+        id="description"
+        name="description"
+        type="text"
+        autocomplete="off"
+        tabindex="3"
+      />
+
+      <button type="submit" tabindex="4">Enviar</button>
+    </form>
+
+    <section id="log" aria-live="polite">
+      <h2>Últimos envíos (demo)</h2>
+      <ul id="entries"></ul>
+    </section>
+
+    <script>
+      (function () {
+        var form = document.getElementById("invoice-form");
+        var entries = document.getElementById("entries");
+
+        form.addEventListener("submit", function (e) {
+          e.preventDefault();
+          var fd = new FormData(form);
+          var name = fd.get("name") || "";
+          var amount = fd.get("amount") || "";
+          var description = fd.get("description") || "";
+
+          var li = document.createElement("li");
+          li.textContent =
+            name + " | " + amount + " | " + description;
+          entries.insertBefore(li, entries.firstChild);
+
+          form.reset();
+          document.getElementById("name").focus();
+        });
+      })();
+    </script>
+  </body>
+</html>
